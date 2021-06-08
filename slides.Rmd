@@ -1,0 +1,552 @@
+---
+title: "Boost Your R Markdown Skills"
+author: "Christophe Dervieux / Yihui Xie"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      # scale and scaleh
+      beforeInit: "macros.js"
+---
+
+```{r xaringan-tachyons, echo=FALSE}
+xaringanExtra::use_tachyons()
+xaringanExtra::use_tile_view()
+xaringanExtra::use_panelset()
+library(fontawesome)
+```
+
+# Who am I ?
+
+.center[
+
+![:scale 25%](https://avatars.githubusercontent.com/u/6791940?v=4)
+
+Software Engineer at RStudio
+
+R Markdown Team
+
+First Time Raukr Speaker
+
+]
+
+???
+
+---
+# What are we talking today ? 
+
+.pull-left[
+![:scale 80%](https://pkgs.rstudio.com/rmarkdown/reference/figures/logo.png)
+]
+.pull-right[
+![:scale 80%](https://bookdown.org/yihui/rmarkdown-cookbook/images/cover.png)
+]
+
+???
+
+Everyone should know rmarkdown among R users. Its principle has not changed since a long time 
+(md + R = Rmd -> output format) quite easy to start (write text, add code chunk, compile) but it can be harder to learn new skill to be more efficient and get full power. 
+
+That is where known recipes can help master more advanced skills. R Markdown Cookbook was thought as a non linear documentation
+
+---
+
+![](https://raw.githubusercontent.com/allisonhorst/stats-illustrations/master/rstats-artwork/rmarkdown_wizards.png)
+
+.right.small[Source: https://github.com/allisonhorst/stats-illustrations]
+
+???
+
+We often see these rmarkdown little wizard mixing Text & Code to produce document. Aim is to look deeper into this today. This is not so magic.
+
+---
+
+# What is inside the box ? 
+
+![](https://bookdown.org/yihui/rmarkdown-cookbook/images/workflow.png)
+
+.right[.small[source: [R Markdown Cookbook](https://bookdown.org/yihui/rmarkdown-cookbook)]]
+
+`knitr::knit()` + Pandoc (+ LaTeX for PDF) = `rmarkdown::render()` 
+
+???
+
+This is important to know so that one understand what to tweak to make something works
+
+---
+
+# About the tools
+
+.pull-left[
+
+* **rmarkdown** is an R package
+
+* It will install **knitr** and **tinytex** for you
+
+* _Pandoc_ is an external binary tool, included inside RStudio IDE. No need to worry ! 
+
+* TinyTeX is the only thing to install if you want PDF output. (`tinytex::install_tinytex()`)
+
+]
+.pull-right[
+![](https://bookdown.org/yihui/rmarkdown-cookbook/images/workflow.png)
+
+.right[.small[source: [R Markdown Cookbook](https://bookdown.org/yihui/rmarkdown-cookbook)]]
+]
+
+In case you need it (but you won't!) : 
+
+* [Use another Pandoc version](https://bookdown.org/yihui/rmarkdown-cookbook/install-pandoc.html) (should never be necessary!)
+* [Install missing LaTeX package](https://bookdown.org/yihui/rmarkdown-cookbook/install-latex-pkgs.html) (should not be necessary as **tinytex** will do it for you at render)
+---
+
+# Let's dive now ! 
+
+.center[![:scale 80%](https://github.com/allisonhorst/stats-illustrations/raw/master/rstats-artwork/rmarkdown_rockstar.png)]
+
+???
+
+Not sure the aim is to be a rockstar but for sure it is to makes those three little guy playing together
+
+---
+class: middle
+
+# How to boost content creation ? 
+
+.center[![](https://media.giphy.com/media/ymTxohR7QWdAOBuYtC/giphy.gif)]
+
+---
+
+# Read external scripts into a chunk
+
+.f3[About the `code` chunk option (1)]
+
+```{cat, engine.opts = list(file = "my_script.R"), echo = FALSE}
+1+1
+```
+
+.panelset[
+
+.panel[.panel-name[in my_script.R]
+````markdown
+`r xfun::read_utf8("my_script.R")`
+````
+]
+
+.panel[.panel-name[in your Rmd]
+````markdown
+```{r, code=xfun::read_utf8('my_script.R')}`r ''`
+```
+````
+]
+
+.panel[.panel-name[equivalent to]
+
+````markdown
+```{r}`r ''`
+`r xfun::read_utf8("my_script.R")`
+```
+````
+
+]
+]
+
+* This will fill the content of the chunk 
+* Can be used with any engine
+* Can be used with multiple script
+
+???
+
+https://bookdown.org/yihui/rmarkdown-cookbook/option-code.html
+
+---
+
+# Create code content programmatically 
+
+.f3[About the `code` chunk option (2)]
+
+Ex: Installation instruction for packages. 
+
+````markdown
+```{r, include = FALSE}`r ''`
+pkgs <- c("glue", "fs")
+installation_package <- sprintf("install.packages(%s)", pkgs)
+```
+```{r, eval = FALSE, code = installation_package}`r ''`
+```
+````
+renders without evaluating to 
+```{r, eval=FALSE, result='asis', code = {pkgs <- c("glue", "fs");sprintf("install.packages(%s)", pkgs)}}
+```
+
+???
+
+Form French slack question
+
+---
+
+# Read multiple code chunks from an R script
+
+.f3[About `knitr::read_chunk()`]
+
+Use `## ---- chunk-label` to label code content. Ex in `my_chunks.R`
+
+````r
+## ---- my-chunk-a --------
+1 + 1
+
+## ---- my-chunk-b --------
+plot(cars)
+```` 
+
+````markdown
+Read an external script to load chunks:
+
+```{r, include=FALSE, cache=FALSE}`r ''`
+knitr::read_chunk('test.R')
+```
+
+Now the code can be used chunk by chunk, e.g.,
+
+```{r, my-chunk-a, echo=FALSE}`r ''`
+```
+
+```{r, my-chunk-b, fig.height=4}`r ''`
+```
+````
+
+???
+
+https://bookdown.org/yihui/rmarkdown-cookbook/read-chunk.html
+
+---
+
+# Use Rmd child document
+
+.f3[About `child` chunk option]
+
+* Load same content in several Rmd document
+
+````markdown
+```{r common-setup, include = FALSE, child = "_common.R"}`r ''`
+```
+````
+
+* Conditionally include a content 
+
+````markdown
+Change `BOSS_MODE` to `TRUE` if this report is to be read
+by the boss:
+
+```{r, include=FALSE}`r ''`
+BOSS_MODE <- FALSE
+```
+
+Conditionally include the appendix:
+
+```{r, child=if (!BOSS_MODE) 'appendix.Rmd'}`r ''`
+```
+````
+
+???
+
+https://bookdown.org/yihui/rmarkdown-cookbook/child-document.html
+
+---
+
+# Dynamically create content
+
+.f3[About `knitr::knit_child()` (and `result = 'asis'`)]
+
+.panelset[
+.panel[
+.panel-name[`template.Rmd`]
+
+````markdown
+## Regression on "`r knitr::inline_expr("x")`"
+
+```{r}`r ''`
+lm(mpg ~ ., data = mtcars[, c("mpg", x)])
+```
+````
+]
+.panel[.panel-name[`main.Rmd`]
+````markdown
+```{r, echo=FALSE, results='asis'}`r ''`
+res <- lapply(setdiff(names(mtcars), 'mpg'), function(x) {
+  knitr::knit_child(
+    'template.Rmd', envir = environment(), quiet = TRUE
+  )
+})
+cat(unlist(res), sep = '\n')
+```
+````
+]
+.panel[.panel-name[without external file]
+````markdown
+```{r, echo=FALSE, results='asis'}`r ''`
+res <- lapply(setdiff(names(mtcars), 'mpg'), function(x) {
+  knitr::knit_child(text = c(
+    '## Regression on "`r knitr::inline_expr("x")`"',
+    '',
+    '```{r}',
+    'lm(mpg ~ ., data = mtcars[, c("mpg", x)])',
+    '```',
+    ''
+  ), envir = environment(), quiet = TRUE)
+})
+cat(unlist(res), sep = '\n')
+```
+````
+]
+]
+
+Can be combined with `knitr::knit_expand()` (See [R Markdown Cookbook](https://bookdown.org/yihui/rmarkdown-cookbook/knit-expand.html))
+
+???
+
+https://bookdown.org/yihui/rmarkdown-cookbook/child-document.html
+
+---
+
+# Use the same chunk label in another chunk
+
+.f3[About chunk `label`]
+
+````markdown
+Here is a code chunk that is not evaluated:
+
+```{r, chunk-one, eval=FALSE}`r ''`
+1 + 1
+2 + 2
+```
+
+Now we actually evaluate it:
+
+```{r, chunk-one, eval=TRUE}`r ''`
+```
+````
+
+???
+
+https://bookdown.org/yihui/rmarkdown-cookbook/reuse-chunks.html
+
+---
+
+# Use labels to reference chunks
+
+.f3[About chunk `ref.label`]
+
+.panelset[
+
+.panel[.panel-name[Rmd code]
+
+````markdown
+```{r chunk-a, ref.label=c('chunk-c', 'chunk-b')}`r ''`
+```
+
+```{r chunk-b}`r ''`
+# this is the chunk b
+1 + 1
+```
+
+```{r chunk-c}`r ''`
+# this is the chunk c
+2 + 2
+```
+````
+]
+
+.panel[.panel-name[`chunk-a` equivalent to]
+
+````markdown
+```{r chunk-a}`r ''`
+# this is the chunk c
+2 + 2
+# this is the chunk b
+1 + 1
+```
+````
+
+]
+
+]
+???
+
+https://bookdown.org/yihui/rmarkdown-cookbook/reuse-chunks.html
+
+---
+class: middle
+
+# How to boost output customization ? 
+
+.center[![](https://media.giphy.com/media/14o3gppq0mt2Lu/giphy.gif)]
+
+---
+
+# Use CSS from inside the document
+
+.f3[About the `css` engine]
+
+````markdown
+```{css, echo = FALSE}`r ''`
+strong {
+  color: blue;
+}
+
+div.box {
+  border-color: blue;
+}
+```
+````
+
+This will be applind directly in the Rmd document without the need of an external file (passed in the `css` argument of `html_document()`)
+
+Going further: See the [`js` engine](https://bookdown.org/yihui/rmarkdown-cookbook/details-tag.html) to apply JS code the same way
+
+???
+
+---
+
+# Use SASS the same way
+
+.f3[About the `sass`/`scss` engine]
+
+.f6[Sass (https://sass-lang.com) is a CSS extension language that allows you to create CSS rules in much more flexible ways than you’d do with plain CSS]
+
+.panelset[
+
+.panel[.panel-name[scss]
+````markdown
+```{scss, echo = FALSE}`r ''`
+$color1: blue
+
+strong {
+  color: $color;
+}
+
+div.box {
+  border-color: $color;
+  border-style: solid;
+  padding: 0.5em;
+}
+```
+````
+]
+.panel[.panel-name[sass]
+````markdown
+```{scss, echo = FALSE}`r ''`
+$color1: blue
+
+strong
+  color: $color
+
+div.box
+  border-color: $color
+  border-style: solid
+  padding: 0.5em
+```
+````
+]
+]
+
+Powered by the new **sass** (https://rstudio.github.io/sass/) R package.  
+External `.sass` / `.scss` file can also be passed in the `css` argument of `html_document()`
+
+???
+
+You can do much more with SASS. It pushes the limit of customization of a document.
+
+---
+layout: true
+
+# Use custom block to add special styling
+
+.f3[Powered by Pandoc's fenced divs syntax]
+
+---
+
+````markdown
+::: box
+Special **important** content
+:::
+````
+
+```{css, echo = FALSE}
+.box-demo {
+  border-color: blue;
+  border-style: solid;
+  padding: 0.5em;
+}
+
+.box-demo strong {
+  color: blue;
+}
+```
+
+With the previous style applied, it will result in this box in the document
+</br>
+.box-demo[
+Special **important** content
+]
+
+```{r, include = FALSE}
+tmp_file <- tempfile()
+```
+
+```{cat, engine.opts = list(file = tmp_file), echo = FALSE}
+::: box
+Special content
+:::
+```
+
+````html
+```{r, echo = FALSE, results='asis'}
+o <- tempfile()
+rmarkdown::pandoc_convert(tmp_file, to = "html", output = o)
+xfun::file_string(o)
+unlink(tmp_file)
+```
+````
+
+---
+
+Attributes and id can be added too
+
+
+````markdown
+::: {.box #box1 style="text-align: center;"}
+Special **important** content
+:::
+````
+
+The above add inline style to the div
+</br>
+.center.box-demo[
+Special **important** content
+]
+
+```{r, include = FALSE}
+tmp_file <- tempfile()
+```
+
+```{cat, engine.opts = list(file = tmp_file), echo = FALSE}
+::: {.box #box1 style="text-align: center;"}
+Special **important** content
+:::
+```
+
+````html
+```{r, echo = FALSE, results='asis'}
+o <- tempfile()
+rmarkdown::pandoc_convert(tmp_file, to = "html", output = o)
+xfun::file_string(o)
+unlink(tmp_file)
+```
+````
+
+---
+layout: false 
+
+# Make it multi format
+
