@@ -1,0 +1,61 @@
+---
+title: "Let's dive into palmerpinguins !"
+author: "C. Dervieux"
+date: "07/06/2021"
+output: 
+  html_document: 
+    df_print: kable
+---
+
+**palmerpinguins** (https://allisonhorst.github.io/palmerpenguins) is an R package to provide a great dataset for data exploration & visualization, as an alternative to iris.
+
+Let's look into it ! 
+
+```{r, message=FALSE}
+library(palmerpenguins)
+library(dplyr)
+library(ggplot2)
+```
+
+The `penguins` data contains the following 
+
+```{r}
+glimpse(penguins)
+```
+
+
+# General metric
+
+We have `r length(unique(penguins$species))` species into this datasets: `r knitr::combine_words(unique(penguins$species))` that are not equally reparted
+
+```{r}
+penguins %>%
+  count(species)
+```
+
+```{r, echo = FALSE}
+knitr::include_graphics("https://allisonhorst.github.io/palmerpenguins/reference/figures/lter_penguins.png")
+```
+
+
+We can get some interesting mean metrics for each species:
+
+```{r}
+penguins %>%
+  group_by(species) %>%
+  select(-year) %>%
+  summarize(across(where(is.numeric), mean, na.rm = TRUE))
+```
+
+We can also look at whare they live: 
+
+```{r}
+ggplot(penguins, aes(x = island, fill = species)) +
+  geom_bar(alpha = 0.8) +
+  scale_fill_manual(values = c("darkorange","purple","cyan4"),
+                    guide = FALSE) +
+  theme_minimal() +
+  facet_wrap(~species, ncol = 1) +
+  coord_flip()
+```
+
