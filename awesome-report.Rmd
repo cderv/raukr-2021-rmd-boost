@@ -7,11 +7,13 @@ output:
     df_print: kable
 ---
 
+## About the data
+
 **palmerpinguins** (https://allisonhorst.github.io/palmerpenguins) is an R package to provide a great dataset for data exploration & visualization, as an alternative to iris.
 
 Let's look into it ! 
 
-```{r, message=FALSE}
+```{r setup, message=FALSE}
 library(palmerpenguins)
 library(dplyr)
 library(ggplot2)
@@ -24,7 +26,7 @@ glimpse(penguins)
 ```
 
 
-# General metric
+## How many species ? 
 
 We have `r length(unique(penguins$species))` species into this datasets: `r knitr::combine_words(unique(penguins$species))` that are not equally reparted
 
@@ -33,21 +35,51 @@ penguins %>%
   count(species)
 ```
 
-```{r, echo = FALSE}
+```{r, out.width='60%', fig.align = 'center', echo = FALSE}
 knitr::include_graphics("https://allisonhorst.github.io/palmerpenguins/reference/figures/lter_penguins.png")
 ```
 
 
+## Interesting Metrics
+
 We can get some interesting mean metrics for each species:
 
 ```{r}
-penguins %>%
+mean_metric <- penguins %>%
   group_by(species) %>%
   select(-year) %>%
   summarize(across(where(is.numeric), mean, na.rm = TRUE))
+mean_metric
 ```
 
-We can also look at whare they live: 
+```{r, echo = FALSE, out.width='75%', fig.align = 'center'}
+knitr::include_graphics("https://allisonhorst.github.io/palmerpenguins/reference/figures/culmen_depth.png")
+```
+The `r filter(mean_metric, body_mass_g == max(body_mass_g)) %>% pull(species)` species is heavier than other ! 
+
+Is this equally reparted between Sex ? 
+
+```{r, warning=FALSE}
+ggplot(penguins, aes(x = flipper_length_mm,
+                            y = body_mass_g)) +
+  geom_point(aes(color = sex)) +
+  theme_minimal() +
+  scale_color_manual(values = c("darkorange","cyan4"), na.translate = FALSE) +
+  labs(title = "Penguin flipper and body mass",
+       subtitle = "Dimensions for male and female Adelie, Chinstrap and Gentoo Penguins at Palmer Station LTER",
+       x = "Flipper length (mm)",
+       y = "Body mass (g)",
+       color = "Penguin sex") +
+  theme(legend.position = "bottom",
+        legend.background = element_rect(fill = "white", color = NA),
+        plot.title.position = "plot",
+        plot.caption = element_text(hjust = 0, face= "italic"),
+        plot.caption.position = "plot") +
+  facet_wrap(~species)
+```
+
+
+## And where do they live ? 
 
 ```{r}
 ggplot(penguins, aes(x = island, fill = species)) +
@@ -59,3 +91,12 @@ ggplot(penguins, aes(x = island, fill = species)) +
   coord_flip()
 ```
 
+One of the species lives on all island and the others are specific to one island only. 
+
+# Acknowledgement
+
+* Alison Horst, and Alison Presman-Hill for the package **palmerpinguins** and the article content from which the example above are taken and inspired. 
+
+* Alison Horst for the two illustrations. 
+
+* Source of content: https://allisonhorst.github.io/palmerpenguins
