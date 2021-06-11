@@ -7,6 +7,7 @@ output:
     nature:
       # scale and scaleh
       beforeInit: "macros.js"
+      highlightLines: true
 ---
 
 ```{r xaringan-tachyons, echo=FALSE}
@@ -172,7 +173,7 @@ Ex: Installation instruction for packages.
 pkgs <- c("glue", "fs")
 installation_package <- sprintf("install.packages(%s)", pkgs)
 ```
-```{r, eval = FALSE, code = installation_package}`r ''`
+*```{r, eval = FALSE, code = installation_package}`r ''`
 ```
 ````
 renders without evaluating to 
@@ -203,7 +204,7 @@ plot(cars)
 Read an external script to load chunks:
 
 ```{r, include=FALSE, cache=FALSE}`r ''`
-knitr::read_chunk('test.R')
+*knitr::read_chunk('test.R')
 ```
 
 Now the code can be used chunk by chunk, e.g.,
@@ -244,7 +245,7 @@ BOSS_MODE <- FALSE
 
 Conditionally include the appendix:
 
-```{r, child=if (!BOSS_MODE) 'appendix.Rmd'}`r ''`
+*```{r, child=if (!BOSS_MODE) 'appendix.Rmd'}`r ''`
 ```
 ````
 
@@ -316,14 +317,14 @@ https://bookdown.org/yihui/rmarkdown-cookbook/child-document.html
 ````markdown
 Here is a code chunk that is not evaluated:
 
-```{r, chunk-one, eval=FALSE}`r ''`
+*```{r, chunk-one, eval=FALSE}`r ''`
 1 + 1
 2 + 2
 ```
 
 Now we actually evaluate it:
 
-```{r, chunk-one, eval=TRUE}`r ''`
+*```{r, chunk-one, eval=TRUE}`r ''`
 ```
 ````
 
@@ -342,7 +343,7 @@ https://bookdown.org/yihui/rmarkdown-cookbook/reuse-chunks.html
 .panel[.panel-name[Rmd code]
 
 ````markdown
-```{r chunk-a, ref.label=c('chunk-c', 'chunk-b')}`r ''`
+*```{r chunk-a, ref.label=c('chunk-c', 'chunk-b')}`r ''`
 ```
 
 ```{r chunk-b}`r ''`
@@ -407,13 +408,21 @@ Going further: See the [`js` engine](https://bookdown.org/yihui/rmarkdown-cookbo
 ???
 
 ---
-
+layout: true
 # Use SASS the same way
 
 .f3[About the `sass`/`scss` engine]
 
-.f6[Sass (https://sass-lang.com) is a CSS extension language that allows you to create CSS rules in much more flexible ways than you’d do with plain CSS]
+---
 
+### What is SASS ?
+
+Sass (https://sass-lang.com) is a CSS extension language that allows you to create CSS rules in much more flexible ways than you’d do with plain CSS]
+</br>
+</br>
+.center[![:scale 25%](https://sass-lang.com/assets/img/logos/logo-b6e1ef6e.svg)]
+
+---
 .panelset[
 
 .panel[.panel-name[scss]
@@ -450,8 +459,25 @@ div.box
 ]
 ]
 
+---
+
+.pull-left[
 Powered by the new **sass** (https://rstudio.github.io/sass/) R package.  
+
+.center[![:scale 50%](https://rstudio.github.io/sass/reference/figures/logo.svg)]
+]
+
+.pull-right[
 External `.sass` / `.scss` file can also be passed in the `css` argument of `html_document()`
+
+````yaml
+output:
+  html_document:
+    css: custom-style.scss
+````
+
+The file will be processed internally by `sass::sass_file()` and produce a `.css` automatically.
+]
 
 ???
 
@@ -548,5 +574,8 @@ unlink(tmp_file)
 ---
 layout: false 
 
-# Make it multi format
+# Aiming multi format
 
+---
+
+# 
