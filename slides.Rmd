@@ -14,7 +14,19 @@ output:
 xaringanExtra::use_tachyons()
 xaringanExtra::use_tile_view()
 xaringanExtra::use_panelset()
-library(fontawesome)
+library(texPreview)
+
+# will be used several times in a cat engine
+temp_file <- tempfile()
+# setting option for the several cat engine
+knitr::opts_template$set(cat_md = list(
+  engine.opts = list(file = temp_file, lang = "markdown"),
+  echo = TRUE
+))
+# clean tempfile after a chunk computation
+knitr::knit_hooks$set(rm_temp = function(before) {
+  if (!before) unlink(temp_file)
+})
 ```
 
 # Who am I ?
@@ -395,13 +407,13 @@ strong {
   color: blue;
 }
 
-div.box {
+div.mybox {
   border-color: blue;
 }
 ```
 ````
 
-This will be applind directly in the Rmd document without the need of an external file (passed in the `css` argument of `html_document()`)
+This will be applied directly in the Rmd document without the need of an external file (passed in the `css` argument of `html_document()`)
 
 Going further: See the [`js` engine](https://bookdown.org/yihui/rmarkdown-cookbook/details-tag.html) to apply JS code the same way
 
@@ -434,7 +446,7 @@ strong {
   color: $color;
 }
 
-div.box {
+div.mybox {
   border-color: $color;
   border-style: solid;
   padding: 0.5em;
@@ -450,7 +462,7 @@ $color1: blue
 strong
   color: $color
 
-div.box
+div.mybox
   border-color: $color
   border-style: solid
   padding: 0.5em
@@ -492,90 +504,219 @@ layout: true
 
 ---
 
-````markdown
-::: box
-Special **important** content
+```{cat, opts.label ='cat_md'}
+::: mybox
+Special content
 :::
-````
+```
 
 ```{css, echo = FALSE}
-.box-demo {
+.mybox-demo {
   border-color: blue;
   border-style: solid;
   padding: 0.5em;
 }
 
-.box-demo strong {
+.mybox-demo strong {
   color: blue;
 }
 ```
 
 With the previous style applied, it will result in this box in the document
 </br>
-.box-demo[
+.mybox-demo[
 Special **important** content
 ]
 
-```{r, include = FALSE}
-tmp_file <- tempfile()
-```
-
-```{cat, engine.opts = list(file = tmp_file), echo = FALSE}
-::: box
-Special content
-:::
-```
-
-````html
-```{r, echo = FALSE, results='asis'}
+```{r demo-box, echo = FALSE, results='asis', rm_temp = TRUE}
 o <- tempfile()
-rmarkdown::pandoc_convert(tmp_file, to = "html", output = o)
-xfun::file_string(o)
-unlink(tmp_file)
+rmarkdown::pandoc_convert(temp_file, to = "html", output = I(o))
+content <- xfun::read_utf8(o)
+unlink(o)
 ```
-````
+
+```{cat, engine.opts = list(lang = "html"), code = content}
+```
 
 ---
 
 Attributes and id can be added too
 
 
-````markdown
-::: {.box #box1 style="text-align: center;"}
+```{cat, opts.label ='cat_md'}
+::: {.mybox #box1 style="text-align: center;"}
 Special **important** content
 :::
-````
+```
 
 The above add inline style to the div
 </br>
-.center.box-demo[
+.center.mybox-demo[
 Special **important** content
 ]
 
-```{r, include = FALSE}
-tmp_file <- tempfile()
+```{r, include = FALSE, rm_temp = TRUE}
+o <- tempfile()
+rmarkdown::pandoc_convert(temp_file, to = "html", output = I(o))
+content <- xfun::read_utf8(o)
+unlink(o)
 ```
 
-```{cat, engine.opts = list(file = tmp_file), echo = FALSE}
-::: {.box #box1 style="text-align: center;"}
+```{cat, engine.opts = list(lang = "html"), code = content}
+```
+
+---
+layout: true 
+
+# Aiming multi formats: HTML & PDF
+
+---
+
+About **rmarkdown** custom blocks
+
+.panelset[
+
+.panel[.panel-name[Support latex]
+
+```{cat, opts.label ='cat_md'}
+::: {.mybox latex=true}
 Special **important** content
 :::
+````
+
+]
+.panel[.panel-name[will output in LaTeX]
+```{r, echo = FALSE, results='asis'}
+o <- tempfile(fileext = ".tex")
+rmarkdown::render(temp_file, rmarkdown::latex_fragment() , output_file = o, quiet = TRUE)
+content <- xfun::read_utf8(o)
+unlink(o)
 ```
 
-````html
-```{r, echo = FALSE, results='asis'}
-o <- tempfile()
-rmarkdown::pandoc_convert(tmp_file, to = "html", output = o)
-xfun::file_string(o)
-unlink(tmp_file)
+```{cat, code = content, class.source = "latex"}
+```
+]
+]
+
+Specially supported by R Markdown and not Pandoc.
+
+---
+
+This requires a LaTeX preamble to render to PDF, for example using `tcolorbox` CTAN package.
+
+```{cat, engine.opts = list(file = {tmp_tex <- tempfile(fileext = ".tex")}, lang = "latex")}
+\usepackage{tcolorbox}
+\newtcolorbox{mybox}{
+  colframe=blue,
+  halign=center,
+  boxsep=5pt,
+  arc=4pt}
+```
+
+To pass to the output format, e.g
+```yaml
+output: 
+  pdf_document:
+    includes:
+      in_header: preamble.tex
+```
+
+---
+
+Using the `cat` engine can help you write the preamble from within the Rmd file
+
+````markdown
+`r ''````{cat, engine.opts = list(file = 'preamble.tex'})}
+\usepackage{tcolorbox}
+\newtcolorbox{mybox}{
+  colframe=blue,
+  halign=center,
+  boxsep=5pt,
+  arc=4pt}
 ```
 ````
 
+This will result in the PDF as this box
+
+```{r, include = FALSE}
+if (!tinytex::check_installed("standalone")) tinytex::tlmgr_install("standalone")
+```
+
+```{texpreview, box-preview, code = c(xfun::read_utf8(tmp_tex), content), echo = FALSE}
+```
+
 ---
-layout: false 
 
-# Aiming multi format
+.center[
+
+![:scale 55%](but-why-not-blue2.gif)
+
+LaTeX customization is a topic for another time ! `r emo::ji("roll_eyes")`
+
+]
+
+---
+layout: false
+
+# What we've learn so far ? 
+
+## Create content without repeating yourself 
+
+* Import code chunk content from a script or from a variable
+
+* Use Rmd child document to share content in several places
+
+* Reuse some chunks several times
+
+## Customize output 
+
+* Customize HTML output using CSS and SASS code
+
+* Create custom blocks for HTML and PDF allowing better customization
 
 ---
 
-# 
+# How to go further ?
+
+.pull-left[
+
+## Look at the source of this presentation
+
+* `opts_template()` and `opts.label` to reuse chunk option
+* `cat` engine to show code and write it to file
+* Chunk hooks to modify the behavior of some chunk
+* `texpreview` engine from **texPreview** `r emo::ji("package")`
+
+]
+
+.pull-right[
+
+## More in the book
+
+.center[
+
+![:scale 40%](https://bookdown.org/yihui/rmarkdown-cookbook/images/cover.png)
+
+https://bookdown.org/yihui/rmarkdown-cookbook/
+
+]
+
+]
+
+---
+class: center middle
+
+# Thank you !
+
+---
+
+# Acknowledgement
+
+```{r, include = FALSE}
+gh_handle_to_link <- function(handle) sprintf("[@%s](https://github.com/%s)", handle, handle)
+```
+
+
+* `r gh_handle_to_link("yihui")` for the [**rmarkdown**](https://pkgs.rstudio.com/rmarkdown/) `r emo::ji("package")` and the R Markdown Cookbook
+* `r gh_handle_to_link("yonicd")` for the [**texPreview**](https://yonicd.github.io/texPreview/index.html) `r emo::ji("package")`
+* `r gh_handle_to_link("cpsievert")` for the [**sass**](https://rstudio.github.io/sass/) `r emo::ji("package")`
