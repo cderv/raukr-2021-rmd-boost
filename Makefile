@@ -1,2 +1,2 @@
 render:
-		Rscript -e 'rmarkdown::render("slides.Rmd", output_dir = "prez")'
+		Rscript -e 'rmarkdown::render("slides.Rmd")'
