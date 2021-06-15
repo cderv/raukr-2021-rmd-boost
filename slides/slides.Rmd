@@ -794,7 +794,7 @@ output:
 Using the `cat` engine can help you write the preamble from within the Rmd file
 
 ````markdown
-`r ''````{cat, engine.opts = list(file = 'preamble.tex'})}
+`r ''````{cat, engine.opts = list(file = 'preamble.tex')}
 \usepackage{tcolorbox}
 \newtcolorbox{mybox}{
   colframe=blue,
