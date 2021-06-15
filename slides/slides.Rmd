@@ -368,7 +368,7 @@ cat(unlist(res), sep = '\n')
 ]
 ]
 
-Can be combined with [`knitr::knit_expand()`](https://bookdown.org/yihui/rmarkdown-cookbook/knit-expand.html))]
+Can be combined with [`knitr::knit_expand()`](https://bookdown.org/yihui/rmarkdown-cookbook/knit-expand.html)
 
 ???
 
