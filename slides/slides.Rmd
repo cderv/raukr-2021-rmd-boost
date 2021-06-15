@@ -33,23 +33,33 @@ knitr::knit_hooks$set(rm_temp = function(before) {
 
 ```
 
----
-class: middle
-
 # Who am I ?
 
-.middle[
+.subtitle[Short intro]
 
 .center[
 
-![:scale 25%](https://avatars.githubusercontent.com/u/6791940?v=4)
+.profile[![:scale 25%](https://avatars.githubusercontent.com/u/6791940?v=4)]
 
-Software Engineer at RStudio
+Software Engineer at RStudio 
 
 R Markdown Team
 
 First Time Raukr Speaker
 
+]
+</br></br>  
+.pull-left[
+.center[
+### `r fontawesome::fa("github")`
+[@cderv](https://github.com/cderv)
+]
+]
+
+.pull-right[
+.center[
+### `r fontawesome::fa("twitter")`
+[@chrisderv](https://twitter.com/chrisderv)
 ]
 ]
 
@@ -179,7 +189,7 @@ add <- function(x, y) {
 ]
 
 ```{r, include = FALSE}
-# unlink("my_script.R")
+unlink("my_script.R")
 ```
 
 
@@ -621,6 +631,11 @@ div
 # Rendering SASS file from R
 sass::sass(sass::sass_file("style.sass"))
 ```
+
+```{r, include=FALSE}
+unlink("style.sass")
+```
+
 
 ]
 

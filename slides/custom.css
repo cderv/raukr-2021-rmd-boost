@@ -160,3 +160,9 @@ h4 {
    --panel-tabs-border-bottom: #ddd;
    --panel-tab-font-family: Menlo, Consolas, Monaco, Liberation Mono, Lucida Console, monospace;
 }
+
+/* rounded image */
+
+.profile img {
+  border-radius: 50%;
+}
