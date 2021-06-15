@@ -5,4 +5,4 @@ render:
 
 deploy:
 		cd slides && \
-		netlify deploy --dir=.
+		netlify deploy --dir=. --prod
