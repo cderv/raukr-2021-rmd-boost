@@ -1,2 +1,8 @@
+all: render deploy
+
 render:
-		Rscript -e 'rmarkdown::render("slides.Rmd")'
+		Rscript -e 'xfun::in_dir("slides", rmarkdown::render("slides.Rmd"))'
+
+deploy:
+		cd slides && \
+		netlify deploy --dir=.
