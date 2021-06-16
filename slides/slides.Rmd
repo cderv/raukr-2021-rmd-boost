@@ -888,6 +888,8 @@ gh_handle_to_link <- function(handle) sprintf("[@%s](https://github.com/%s)", ha
 ```
 
 
-* `r gh_handle_to_link("yihui")` for the [**rmarkdown**](https://pkgs.rstudio.com/rmarkdown/) `r emo::ji("package")` and the R Markdown Cookbook
+* Emily Riederer and Yihui Xie, for the R Markdown Cookbook
+* Alison Horst for the illustrations.
 * `r gh_handle_to_link("yonicd")` for the [**texPreview**](https://yonicd.github.io/texPreview/index.html) `r emo::ji("package")`
 * `r gh_handle_to_link("cpsievert")` for the [**sass**](https://rstudio.github.io/sass/) `r emo::ji("package")`
+* https://tenor.com for the GIF.
