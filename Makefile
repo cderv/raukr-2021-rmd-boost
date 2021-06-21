@@ -1,6 +1,6 @@
-all: reports reports-full render
+all: reports reports-full slides
 
-render:
+slides:
 		Rscript -e 'xfun::in_dir("slides", rmarkdown::render("slides.Rmd", output_file = "index.html", quiet = TRUE))'
 
 reports-full:
