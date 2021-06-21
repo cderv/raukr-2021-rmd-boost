@@ -1,0 +1,7 @@
+## Acknowledgement
+
+* Alison Horst, and Alison Presman-Hill for the package **palmerpinguins** and the article content from which the example above are taken and inspired. 
+
+* Allison Horst for the two illustrations. 
+
+* Source of content: https://allisonhorst.github.io/palmerpenguins
