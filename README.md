@@ -71,6 +71,7 @@ This project uses a _Makefile_ to render the document.
   ```sh
   make render-slides
   ```
+  Once built, `servr::httd("slides")` can be used to serve the presentation locally
 
 * Render the demo reports with 
   ```sh
