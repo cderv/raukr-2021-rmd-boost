@@ -1,7 +1,7 @@
 all: reports reports-full render
 
 render:
-		Rscript -e 'xfun::in_dir("slides", rmarkdown::render("slides.Rmd", output_file = "index.html"), quiet = TRUE)'
+		Rscript -e 'xfun::in_dir("slides", rmarkdown::render("slides.Rmd", output_file = "index.html", quiet = TRUE))'
 
 reports-full:
 		Rscript -e 'rmarkdown::render("demo-recipe-report.Rmd", "all", output_file = "demo-report-full", params = list(full = TRUE), quiet = TRUE)'
