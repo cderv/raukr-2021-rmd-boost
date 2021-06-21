@@ -56,6 +56,11 @@ To run this project locally here are the steps
   ```
   All required LaTeX packages for compiling will then be automatically installed.
   
+* If you want to run the slides, don't forget to download remark 
+  ```r
+  xfun::in_dir("slides/", xaringan::summon_remark())
+  ```
+
 * Everything should now be setup and you can render the different documents.
 
 ## Rendering the different documents
