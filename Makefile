@@ -1,7 +1,7 @@
 all: reports reports-full render deploy
 
 render:
-		Rscript -e 'xfun::in_dir("slides", rmarkdown::render("slides.Rmd", output_file = "index.html"))'
+		Rscript -e 'xfun::in_dir("slides", rmarkdown::render("slides.Rmd", output_file = "index.html"), quiet = TRUE)'
 
 deploy:
 		cd slides && \
