@@ -78,11 +78,14 @@ h4 {
 
   h1, h2, h3, h4, p {
     margin-top: 10px;
-    margin-bottom: 0px;
+  }
+
+  p {
+    margin-bottom: 10px;
   }
 
   h1 + p {
-  margin-top: 0px;
+    margin-top: 0px;
   }
 
   .subtitle {
@@ -91,6 +94,7 @@ h4 {
     color: $grey;
     font-size: 35px;
     margin-bottom: 20px;
+    margin-top: -30px;
   }
 }
 
@@ -170,4 +174,12 @@ h4 {
 
 .profile img {
   border-radius: 50%;
+}
+
+
+.source-fig {
+  @extend .small;
+  p {
+    margin-top: -30px;
+  }
 }
