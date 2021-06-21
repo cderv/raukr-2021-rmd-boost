@@ -34,6 +34,8 @@ Everything will configured an ready to go !
 
 All the output files will also be already available to look at. This is why there will be a bit more than the one listed above and contain in the git repo. 
 
+You can update the project by running `git pull` in RStudio IDE's terminal.
+
 ## ...the hard way ! 
 
 To run this project locally here are the steps
