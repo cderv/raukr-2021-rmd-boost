@@ -846,14 +846,14 @@ layout: false
 
 ## Create content without repeating yourself 
 
-* .color2[Import code chunk content] from a script or from a variable
-* .color2[Use Rmd child document] to share content in several places
-* .color2[Reuse some chunks] several times
+* .color2[**Import code chunk content**] from a script or from a variable
+* .color2[**Use Rmd child document**] to share content in several places
+* .color2[**Reuse some chunks**] several times
 
 ## Customize output style
 
-* .color2[Customize HTML output] using CSS and SASS code
-* .color2[Create and style custom blocks] for HTML and PDF allowing better customization
+* .color2[**Customize HTML output**] using CSS and SASS code
+* .color2[**Create and style custom blocks**] for HTML and PDF allowing better customization
 
 ---
 
@@ -867,6 +867,7 @@ layout: false
 
 Xaringan Source + Demo file in </br> .f2.color1[`r fontawesome::fa("github")`] [cderv/raukr-2021-rmd-boost](https://github.com/cderv/raukr-2021-rmd-boost)
 </br></br></br>
+Or quickly try with  
 [![](https://img.shields.io/badge/RStudio%20Cloud-Open%20project-4D8DC9?style=for-the-badge&logo=`r xfun::read_utf8("logo-base64.txt")`)](https://rstudio.cloud/project/2654845)
 
 https://rstudio.cloud/project/2654845
