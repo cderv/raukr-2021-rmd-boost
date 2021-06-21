@@ -723,7 +723,8 @@
       "RemoteUsername": "rstudio",
       "RemoteRepo": "renv",
       "RemoteRef": "0.13.2-85",
-      "RemoteSha": "f94a2313cd74a722a569d0e5b57ab4f8c92dcd13"
+      "RemoteSha": "f94a2313cd74a722a569d0e5b57ab4f8c92dcd13",
+      "Hash": "61f719ce8f27f5eedd3da4548dd38edb"
     },
     "rlang": {
       "Package": "rlang",
