@@ -69,7 +69,7 @@ This project uses a _Makefile_ to render the document.
 
 * Render the presentation 
   ```sh
-  make slides
+  make render-slides
   ```
 
 * Render the demo reports with 
