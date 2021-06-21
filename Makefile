@@ -11,6 +11,7 @@ reports:
 		Rscript -e 'rmarkdown::render("demo-recipe-report.Rmd", "all", output_file = "demo-report", params = list(full = FALSE), quiet = TRUE)'
 		mv demo-recipe-report.pdf demo-report.pdf
 
+# this require the netlify cli to be setup
 deploy:
 		cd slides && \
-		netlify deploy --dir=. --prod
+		netlify deploy --dir=. --prod || echo '## >> netlify not configured - deployement skipped'
