@@ -83,7 +83,9 @@ First Time Raukr Speaker
 Everyone should know rmarkdown among R users. Its principle has not changed since a long time 
 (md + R = Rmd -> output format) quite easy to start (write text, add code chunk, compile) but it can be harder to learn new skill to be more efficient and get full power. 
 
-That is where known recipes can help master more advanced skills. R Markdown Cookbook was thought as a non linear documentation
+That is where known recipes can help master more advanced skills. R Markdown Cookbook was thought as a non linear documentation.
+
+Also new logo and new pkgdown website
 
 ---
 layout: true
@@ -97,7 +99,7 @@ layout: true
 
 ???
 
-We often see these rmarkdown little wizard mixing Text & Code to produce document. Aim is to look deeper into this today. This is not so magic.
+We often see these rmarkdown little wizard mixing Text & Code to produce document. Aim is to look deeper into this today. This is not so magic. It is juts percieved magic and there are tools to know about under the hood to be able to customize behavior further.
 
 ---
 
@@ -110,7 +112,11 @@ source: [R Markdown Cookbook](https://bookdown.org/yihui/rmarkdown-cookbook)
 
 ???
 
-This is important to know so that one understand what to tweak to make something works
+rmarkdown will run Pandoc & knitr for you.
+
+LaTeX only needed with PDF. tinytex will run it for you.  
+
+This is important to know all this because it helps know where to look and what could be tweak. one has to understand what to tweak to make something works as expected.
 
 ---
 layout: false
@@ -139,6 +145,15 @@ In case you need it:
 .right[.small[source: [R Markdown Cookbook](https://bookdown.org/yihui/rmarkdown-cookbook)]]
 ]
 
+???
+
+Best to use TinyTeX as it is tested agains rmarkdown. 
+
+Everything should work as expected otherwise. No special tool needed unless for advanced usage. 
+
+Missing CTAN packages are installed by tinytex the R package.
+
+
 ---
 # Let's dive now ! 
 
@@ -147,13 +162,17 @@ In case you need it:
 
 ???
 
-Not sure the aim is to be a rockstar but for sure it is to makes those three little guy playing together
+Not sure the aim is to be a rockstar but for sure it is to make those three little guy playing together smoothly
 
 ---
 # How to boost content creation ? 
 
 .center[![:scale 50%, Gif sayins Content is king with an illustration of a king at his desk in front of a computer with a crown dropping on his head. ](https://media.giphy.com/media/ymTxohR7QWdAOBuYtC/giphy.gif)]
 
+
+???
+
+First thing to focus one: Boost the content of the R Markdown.
 ---
 
 # Read external scripts into a chunk
@@ -203,7 +222,9 @@ unlink("my_script.R")
 
 ???
 
-https://bookdown.org/yihui/rmarkdown-cookbook/option-code.html
+From Bookdown : https://bookdown.org/yihui/rmarkdown-cookbook/option-code.html
+
+Useful for bigger project, or when script already exists. 
 
 ---
 
@@ -227,7 +248,7 @@ renders without evaluating to
 
 ???
 
-Form French slack question
+This is just an example and this can be done with any chunk option. It is quite powerful ! 
 
 ---
 
@@ -282,6 +303,7 @@ Useful for:
 
 * sharing common part of code in a script
 * Store all R code in one R file
+* For bigger project often, or when script already exists.
 
 https://bookdown.org/yihui/rmarkdown-cookbook/read-chunk.html
 
@@ -317,7 +339,9 @@ Conditionally include the appendix:
 
 ???
 
-This respect chunk option so could be useful to conditionnal eval or not a part of a document
+This respect chunk option so could be useful for conditionnally eval or not a part of a document. 
+
+Also useful to organize project in smaller pieces.
 
 https://bookdown.org/yihui/rmarkdown-cookbook/child-document.html
 
@@ -387,6 +411,8 @@ cat(unlist(res), sep = '\n')
 
 ???
 
+Quite like child document but a bit different. Can be useful sometimes for programatically create markdown content.
+
 https://bookdown.org/yihui/rmarkdown-cookbook/child-document.html
 
 ---
@@ -413,6 +439,9 @@ First chunk will be used twice - different options are allowed.
 
 
 ???
+
+
+Reuse a figure, Show code in another place that the initial result, show figure in another place than where the plot has been evaluated. Recompute the same content.
 
 https://bookdown.org/yihui/rmarkdown-cookbook/reuse-chunks.html
 
@@ -478,7 +507,10 @@ https://bookdown.org/yihui/rmarkdown-cookbook/reuse-chunks.html
 ]
 
 ]
+
 ???
+
+Yes chunk content can be combined. Could be useful to show code in appendix at the end of the document for example.
 
 https://bookdown.org/yihui/rmarkdown-cookbook/reuse-chunks.html
 
@@ -487,6 +519,10 @@ https://bookdown.org/yihui/rmarkdown-cookbook/reuse-chunks.html
 # How to boost output styling ? 
 
 .center[![:scale 65%, Gif of a man in a suits putting a a pink hat with included sunglasses. Text on the gif says 'You don't like my style', then 'Deal with it'](https://media.giphy.com/media/14o3gppq0mt2Lu/giphy.gif)]
+
+???
+
+Let's talk about styling content now. 
 
 ---
 
@@ -535,6 +571,12 @@ Sass (https://sass-lang.com) is a CSS extension language that allows you to crea
 .center[![:scale 25%](https://sass-lang.com/assets/img/logos/logo-b6e1ef6e.svg)]
 
 It allows for variables, tweaking functions (called _mixins_), operations (like `/`), better CSS rule organisation (nesting, extensions, ...) and more.
+
+???
+
+External tool used by web developers. Very powerful and this is a skill to learn when doing a lot of HTML. It can do a lot ! 
+
+But no need to use it directly. Still need to learn the feature and syntax.
 
 ---
 .panelset[
@@ -597,6 +639,12 @@ In both example, we are using special _SASS_ feature like [Nesting](https://sass
 ]
 ]
 
+???
+
+The CSS is the one that would be render when using sass on the .scss or .sass file. 
+
+No preference on the syntax - it is a personnal choice (and depending on environment.)
+
 ---
 layout: true
 # Use SASS the same way
@@ -607,13 +655,20 @@ layout: true
 
 .center[
 
-![:scale 35%](https://rstudio.github.io/sass/reference/figures/logo.svg)
+![:scale 25%](https://rstudio.github.io/sass/reference/figures/logo.svg)
 
 https://rstudio.github.io/sass/
 
+</br>
+.box[Support is now built-in **rmarkdown**]
+
 ]
 
+???
 
+Quite new. Allow to use SASS from R. Wrapper around a C library.
+
+Supported in rmarkdown now.
 
 ---
 
@@ -652,6 +707,10 @@ unlink("style.sass")
 ]
 
 ]
+
+???
+
+Small intro. Best is to look at the pkgdown website.
 
 ---
 
@@ -716,6 +775,13 @@ unlink(o)
 ```{cat, engine.opts = list(lang = "html"), code = content}
 ```
 
+???
+
+Pandoc feature. R Markdown knows and extend it. 
+Quite simple to write but quite powerful. 
+
+Supported by Visual editor.
+
 ---
 
 Attributes and id can be added too, e.g
@@ -742,6 +808,10 @@ unlink(o)
 
 ```{cat, engine.opts = list(lang = "html"), code = content}
 ```
+
+??? 
+
+Allow to style mainly.
 
 ---
 layout: true 
@@ -780,6 +850,11 @@ Specially supported by R Markdown and not Pandoc.
 
 .box[Create a LaTeX environment as easily as you can create a HTML div.]
 
+???
+
+Extend the Pandoc feature for LaTeX environment. Not done by default in Pandoc. 
+Special feature of rmarkdown.
+
 ---
 
 This requires a LaTeX preamble for this custom environment to render to PDF, e.g using `tcolorbox` CTAN package.
@@ -800,6 +875,10 @@ output:
     includes:
       in_header: preamble.tex
 ```
+
+???
+
+Could also be added in a file directly obviously.
 
 ---
 
@@ -824,6 +903,12 @@ if (!tinytex::check_installed("standalone")) tinytex::tlmgr_install("standalone"
 
 ```{texpreview, box-preview, code = c(xfun::read_utf8(tmp_tex), content), echo = FALSE}
 ```
+
+???
+
+Just for showing cat engine usage here; 
+
+And try texPreview in source file
 
 ---
 layout: false
@@ -888,6 +973,10 @@ https://rstudio.cloud/project/2654845
 ]
 
 ]
+
+???
+
+Special demo file contains part of what we saw but also other recipes from the cookbook.
 
 ---
 class: center middle
