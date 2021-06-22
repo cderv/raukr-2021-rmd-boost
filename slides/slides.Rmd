@@ -282,7 +282,7 @@ plot(cars)
 Read an external script to load chunks:
 
 ```{r, include=FALSE, cache=FALSE}`r ''`
-*knitr::read_chunk('test.R')
+*knitr::read_chunk('my_script.R')
 ```
 
 Now the code can be used chunk by chunk, e.g.,
@@ -1005,3 +1005,23 @@ gh_handle_to_link <- function(handle) sprintf("[@%s](https://github.com/%s)", ha
 * `r gh_handle_to_link("cpsievert")` for the [**sass**](https://rstudio.github.io/sass/) `r emo::ji("package")`
 
 * https://tenor.com for the GIF.
+
+
+```{r meta, echo=FALSE}
+library(metathis)
+meta() %>%
+  meta_general(
+    description = "A presentation at RAUKR2021 about tips and tricks to boost a R Markdown skills.",
+    generator = "xaringan and remark.js"
+  ) %>% 
+  meta_social(
+    title = "Boost Your R Markdown Skills",
+    url = "https://raukr-boost-rmd-skills.netlify.app/",
+    image = "https://raukr-boost-rmd-skills.netlify.app/webshot.png",
+    image_alt = "The third slide of the presentation showing what will be discussed in the presenation: rmarkdown package and R Markdown Cookbook recipes.",
+    og_type = "website",
+    og_author = "Christophde Dervieux",
+    twitter_card_type = "summary_large_image",
+    twitter_creator = "@chrisderv"
+  )
+```
