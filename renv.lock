@@ -557,6 +557,13 @@
       "RemoteSha": "1.1",
       "Hash": "61e4a10781dd00d7d81dd06ca9b94e95"
     },
+    "metathis": {
+      "Package": "metathis",
+      "Version": "1.0.3",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "5056a889bccd51d78697799bc25ece39"
+    },
     "mgcv": {
       "Package": "mgcv",
       "Version": "1.8-36",
