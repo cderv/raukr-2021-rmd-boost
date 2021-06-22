@@ -1,6 +1,10 @@
 .PHONY: reports reports-full render-slides deploy clean
 
-all: reports reports-full render-slides
+all: reports reports-full render-slides README.md
+
+README.md: README.Rmd
+		Rscript -e 'rmarkdown::render("$<", "github_document", quiet = TRUE)'
+
 
 render-slides: slides/index.html
 
