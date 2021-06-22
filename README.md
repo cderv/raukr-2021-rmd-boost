@@ -89,4 +89,5 @@ This project uses a _Makefile_ to render the document.
 
 > I don't know about Makefile - Can I just use R and RStudio ? 
 
-Yes you can ! Just use the knit button in RStudio. The output filename could be different, but this repo is just about demo and toying with examples, so it does not matter much. You can also open the Makefile to see the R commands used.
+Yes you can ! Just use the knit button in RStudio. The output filename could be different, but this repo is just about demo and toying with examples, so it does not matter much.
+Otherwise, you can just use the `rmarkdown::render()`.
